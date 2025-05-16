@@ -41,6 +41,8 @@ export async function POST(req: Request) {
     await db.srem(`user:${session.user.id}:incoming_friend_requests`, idToAdd);
     return new Response("OK");
   } catch (error) {
+    console.log(error);
+
     if (error instanceof z.ZodError) {
       return new Response("Invalid request payload", { status: 422 });
     }
