@@ -8,12 +8,6 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-interface pageProps {
-  params: {
-    chatId: string;
-  };
-}
-
 async function getChatMessages(chatId: string) {
   try {
     const results: string[] = await fetchRedis(
@@ -30,13 +24,13 @@ async function getChatMessages(chatId: string) {
     const messages = messageArrayValidator.parse(reversedDbMessages);
 
     return messages;
-  } catch (error) {
+  } catch {
     notFound();
   }
 }
 
-const page = async ({ params }: pageProps) => {
-  const { chatId } = await params;
+const page = async ({ params }: { params: { chatId: string } }) => {
+  const { chatId } = params;
   const session = await getServerSession(authOptions);
   if (!session) notFound();
 
@@ -77,8 +71,14 @@ const page = async ({ params }: pageProps) => {
           </div>
         </div>
       </div>
-      <Messages chatId={chatId} chatPartner={chatPartner} sessionImg={session.user.image} sessionId={session.user.id} initialMessages={initialMessages}/>
-      <ChatInput chatId={chatId} chatPartner={chatPartner}/>
+      <Messages
+        chatId={chatId}
+        chatPartner={chatPartner}
+        sessionImg={session.user.image}
+        sessionId={session.user.id}
+        initialMessages={initialMessages}
+      />
+      <ChatInput chatId={chatId} chatPartner={chatPartner} />
     </div>
   );
 };

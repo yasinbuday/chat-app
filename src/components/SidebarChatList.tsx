@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import UnseenChatToast from "./UnseenChatToast";
-import { set } from "date-fns";
+
 
 interface SidebarChatListProps {
   friends: User[];

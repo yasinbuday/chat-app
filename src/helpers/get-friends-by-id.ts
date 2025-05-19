@@ -1,4 +1,3 @@
-import { after } from "node:test";
 import { fetchRedis } from "./redis";
 
 export const getFriendsByUserId = async (userId: string) => {
