@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+
 async function getChatMessages(chatId: string) {
   try {
     const results: string[] = await fetchRedis(
@@ -29,8 +30,8 @@ async function getChatMessages(chatId: string) {
   }
 }
 
-const page = async ({ params }: { params: { chatId: string } }) => {
-  const { chatId } = params;
+const Page = async ({ params }: {params: Promise<{ chatId: string }>}) => {
+  const { chatId } = await params;
   const session = await getServerSession(authOptions);
   if (!session) notFound();
 
@@ -83,4 +84,4 @@ const page = async ({ params }: { params: { chatId: string } }) => {
   );
 };
 
-export default page;
+export default Page;
