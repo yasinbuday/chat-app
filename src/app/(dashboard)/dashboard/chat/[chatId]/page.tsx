@@ -8,7 +8,6 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-
 async function getChatMessages(chatId: string) {
   try {
     const results: string[] = await fetchRedis(
@@ -30,7 +29,7 @@ async function getChatMessages(chatId: string) {
   }
 }
 
-const Page = async ({ params }: {params: Promise<{ chatId: string }>}) => {
+const Page = async ({ params }: { params: Promise<{ chatId: string }> }) => {
   const { chatId } = await params;
   const session = await getServerSession(authOptions);
   if (!session) notFound();
@@ -44,7 +43,12 @@ const Page = async ({ params }: {params: Promise<{ chatId: string }>}) => {
   }
 
   const chatPartnerId = user.id === userId1 ? userId2 : userId1;
-  const chatPartner = (await db.get(`user:${chatPartnerId}`)) as User;
+
+  const chatPartnerRaw = (await fetchRedis(
+    "get",
+    `user:${chatPartnerId}`
+  )) as string;
+  const chatPartner = JSON.parse(chatPartnerRaw) as User;
   const initialMessages = await getChatMessages(chatId);
 
   return (
