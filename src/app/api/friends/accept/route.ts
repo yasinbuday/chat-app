@@ -32,6 +32,10 @@ export async function POST(req: Request) {
       idToAdd
     );
 
+    if (!hasFriendRequest) {
+      return new Response('No friend request', { status: 400 })
+    }
+
     const [userRaw, friendRaw] = (await Promise.all([
       fetchRedis("get", `user:${session.user.id}`),
       fetchRedis("get", `user:${idToAdd}`),
