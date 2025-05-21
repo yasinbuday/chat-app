@@ -10,7 +10,7 @@ import {
 } from "@headlessui/react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { Button, buttonVariants } from "../components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Icons } from "./Icons";
 import { Session } from "next-auth";
 import { SideBarOption } from "@/types/typings";
